@@ -51,3 +51,33 @@ resource "aws_instance" "my_ec2_example" {
     Name = "Terraform EC2-${count.index}"
  }
 }
+
+
+resource "aws_instance" "my_ec2_example" {
+ ami = "ami-0851b76e8b1bce90b"
+ instance_type = "t2.micro"
+ key_name = "aditya"
+ security_groups = [ "terraform-sb" ]
+
+ tags = {
+    Name = "Terraform-ec2"
+ }
+
+connection {
+  type = "ssh"
+  host = self.public_ip
+  user = "ubuntu"
+  private_key = file("C:/Users/91956/Downloads/aditya.pem")
+}
+
+provisioner "file" {
+  content = "hello welcome to class"
+  destination = "/home/ubuntu/welcome.txt"
+ }
+
+provisioner "remote-exec" {
+  inline = [
+    "sudo mkdir /home/ubuntu/test"
+  ]
+}
+}
